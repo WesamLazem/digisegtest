@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client Organisations Expiring Soon</title>
+</head>
+<body>
+<h1>Client Organisations Expiring Soon</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Expiry Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="organisation : ${expiringSoon}">
+        <td th:text="${organisation.id}">ID</td>
+        <td th:text="${organisation.name}">Name</td>
+        <td th:text="${organisation.expiryDate}">Expiry Date</td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/client-organisations}">Back to list</a>
+
+</body>
+</html>

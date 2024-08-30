@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client Organisations</title>
+</head>
+<body>
+<h1>Client Organisations</h1>
+<a href="/client-organisations/create">Create New Organisation</a>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Registration Date</th>
+        <th>Expiry Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="organisation : ${organisations}">
+        <td th:text="${organisation.name}">Name</td>
+        <td th:text="${organisation.registrationDate}">Registration Date</td>
+        <td th:text="${organisation.expiryDate}">Expiry Date</td>
+        <td>
+            <span th:if="${!organisation.enabled}" style="color: red;">Disabled</span>
+            <span th:if="${organisation.enabled}">Enabled</span>
+        </td>
+        <td>
+            <a th:href="@{/client-organisations/{id}/edit(id=${organisation.id})}">Edit</a>
+            <form th:action="@{/client-organisations/{id}/delete(id=${organisation.id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a href="/client-organisations/client_organisations/enabled/count">Count Enabled Organisations</a>
+    <a href="/client-organisations/client_organisations/expiring_soon">Expiring Soon</a>
+</div>
+</body>
+</html>
+

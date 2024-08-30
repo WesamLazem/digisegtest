@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Client Organisation</title>
+</head>
+<body>
+<h1>Edit Client Organisation</h1>
+
+<form th:action="@{/client-organisations/{id}/edit(id=${clientOrganisation.id})}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${clientOrganisation.name}" required/><br>
+
+    <label for="registrationDate">Registration Date:</label>
+    <input type="date" id="registrationDate" name="registrationDate" th:value="${clientOrganisation.registrationDate}" required/><br>
+
+    <label for="expiryDate">Expiry Date:</label>
+    <input type="date" id="expiryDate" name="expiryDate" th:value="${clientOrganisation.expiryDate}" required/><br>
+
+    <label for="enabled">Enabled:</label>
+    <input type="checkbox" id="enabled" name="enabled" th:checked="${clientOrganisation.enabled}"/><br>
+
+    <button type="submit">Update</button>
+</form>
+
+<a th:href="@{/client-organisations}">Back to list</a>
+
+</body>
+</html>

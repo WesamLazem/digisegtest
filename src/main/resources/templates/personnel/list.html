@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Personnel List</title>
+</head>
+<body>
+<h1>Personnel List</h1>
+<a th:href="@{/personnel/create(clientOrganisationId=${clientOrganisationId})}">
+
+    Add New Personnel</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Telephone Number</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${personnelList}">
+        <td th:text="${person.firstName}">First Name</td>
+        <td th:text="${person.lastName}">Last Name</td>
+        <td th:text="${person.username}">Username</td>
+        <td th:text="${person.email}">Email</td>
+        <td th:text="${person.telephoneNumber}">Telephone Number</td>
+        <td>
+            <a th:href="@{/personnel/{id}/edit(id=${person.id})}">Edit</a>
+            <form th:action="@{/personnel/{id}/delete(id=${person.id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+

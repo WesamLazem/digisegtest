@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Enabled Client Organisations Count</title>
+</head>
+<body>
+<h1>Enabled Client Organisations</h1>
+
+<p>Total Enabled Client Organisations: <span th:text="${enabledCount}">0</span></p>
+
+<a th:href="@{/client-organisations/client_organisations/list}">Back to list</a>
+
+</body>
+</html>

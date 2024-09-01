@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import java.util.Collections;
 
@@ -28,8 +29,13 @@ public class ClientOrganisationControllerTest {
     @InjectMocks
     private ClientOrganisationController clientOrganisationController;
 
+
+    @Mock
+    private BindingResult bindingResult;
+
     @Mock
     private Model model;
+
 
     @BeforeEach
     public void setUp() {
@@ -57,12 +63,34 @@ public class ClientOrganisationControllerTest {
         assertThat(viewName).isEqualTo("client_organisations/create");
     }
 
+//    @Test
+//    public void testCreateClientOrganisation() {
+//        ClientOrganisation organisation = new ClientOrganisation();
+//        organisation.setName("New Organisation");
+//
+//        String viewName = clientOrganisationController.createClientOrganisation(organisation);
+//        verify(clientOrganisationService).createClientOrganisation(organisation);
+//        assertThat(viewName).isEqualTo("redirect:/client-organisations");
+//    }
+//    @Test
+//    public void testCreateClientOrganisation() {
+//        ClientOrganisation organisation = new ClientOrganisation();
+//        organisation.setName("New Organisation");
+//
+//        when(bindingResult.hasErrors()).thenReturn(false);
+//
+//        String viewName = clientOrganisationController.createClientOrganisation(organisation, bindingResult, model);
+//        verify(clientOrganisationService).createClientOrganisation(organisation);
+//        assertThat(viewName).isEqualTo("redirect:/client-organisations");
+//    }
     @Test
     public void testCreateClientOrganisation() {
         ClientOrganisation organisation = new ClientOrganisation();
         organisation.setName("New Organisation");
 
-        String viewName = clientOrganisationController.createClientOrganisation(organisation);
+        when(bindingResult.hasErrors()).thenReturn(false);  // Simulate no validation errors
+
+        String viewName = clientOrganisationController.createClientOrganisation(organisation, bindingResult, model);
         verify(clientOrganisationService).createClientOrganisation(organisation);
         assertThat(viewName).isEqualTo("redirect:/client-organisations");
     }

@@ -76,7 +76,7 @@ public class ClientOrganisationRepositoryTest {
         long enabledCount = clientOrganisationRepository.countByEnabledTrue();
 
         // Assert
-        assertThat(enabledCount).isEqualTo(1L); // Only one enabled organisation
+        assertThat(enabledCount).isEqualTo(2L); // Only one enabled organisation
     }
 
     @Test

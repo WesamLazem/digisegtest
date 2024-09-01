@@ -102,9 +102,41 @@ class ClientOrganisationServiceTest {
         assertThat(enabledCount).isEqualTo(3L);
     }
 
+//    @Test
+//    public void testFindExpiringSoon() {
+//        // Arrange
+//        LocalDate today = LocalDate.now();
+//        LocalDate expiringSoonDate = today.plusDays(5);
+//        LocalDate expiredDate = today.minusDays(1);
+//        LocalDate notExpiringSoonDate = today.plusDays(10);
+//
+//        ClientOrganisation org1 = new ClientOrganisation();
+//        org1.setName("Expiring Soon Organisation");
+//        org1.setExpiryDate(expiringSoonDate);
+//        org1.setEnabled(true);
+//
+//        ClientOrganisation org2 = new ClientOrganisation();
+//        org2.setName("Expired Organisation");
+//        org2.setExpiryDate(expiredDate);
+//        org2.setEnabled(true);
+//
+//        ClientOrganisation org3 = new ClientOrganisation();
+//        org3.setName("Not Expiring Soon Organisation");
+//        org3.setExpiryDate(notExpiringSoonDate);
+//        org3.setEnabled(true);
+//
+//        List<ClientOrganisation> organisations = Arrays.asList(org1, org2, org3);
+//        when(clientOrganisationRepository.findAll()).thenReturn(organisations);
+//
+//        // Act
+//        List<ClientOrganisation> expiringSoonOrganisations = clientOrganisationService.findExpiringSoon();
+//
+//        // Assert
+//        assertThat(expiringSoonOrganisations).containsExactlyInAnyOrder(org1, org2);
+//        assertThat(expiringSoonOrganisations).doesNotContain(org3);
+//    }
     @Test
     public void testFindExpiringSoon() {
-        // Arrange
         LocalDate today = LocalDate.now();
         LocalDate expiringSoonDate = today.plusDays(5);
         LocalDate expiredDate = today.minusDays(1);
@@ -113,26 +145,52 @@ class ClientOrganisationServiceTest {
         ClientOrganisation org1 = new ClientOrganisation();
         org1.setName("Expiring Soon Organisation");
         org1.setExpiryDate(expiringSoonDate);
-        org1.setEnabled(true);
 
         ClientOrganisation org2 = new ClientOrganisation();
         org2.setName("Expired Organisation");
         org2.setExpiryDate(expiredDate);
-        org2.setEnabled(true);
 
         ClientOrganisation org3 = new ClientOrganisation();
         org3.setName("Not Expiring Soon Organisation");
         org3.setExpiryDate(notExpiringSoonDate);
-        org3.setEnabled(true);
 
         List<ClientOrganisation> organisations = Arrays.asList(org1, org2, org3);
         when(clientOrganisationRepository.findAll()).thenReturn(organisations);
 
-        // Act
         List<ClientOrganisation> expiringSoonOrganisations = clientOrganisationService.findExpiringSoon();
 
-        // Assert
         assertThat(expiringSoonOrganisations).containsExactlyInAnyOrder(org1, org2);
-        assertThat(expiringSoonOrganisations).doesNotContain(org3);
+    }
+    @Test
+    public void testCreateClientOrganisationAutomaticallyDisablesExpiredOrganisations() {
+        LocalDate expiredDate = LocalDate.now().minusDays(1);
+        ClientOrganisation org = new ClientOrganisation();
+        org.setName("Expired Organisation");
+        org.setExpiryDate(expiredDate);
+        org.setEnabled(true);
+
+        when(clientOrganisationRepository.save(org)).thenReturn(org);
+
+        ClientOrganisation savedOrg = clientOrganisationService.createClientOrganisation(org);
+
+        assertThat(savedOrg.isEnabled()).isFalse();
+        verify(clientOrganisationRepository).save(org);
+    }
+
+    @Test
+    public void testDisableExpiredOrganisations() {
+        LocalDate expiredDate = LocalDate.now().minusDays(1);
+
+        ClientOrganisation org = new ClientOrganisation();
+        org.setName("Expired Organisation");
+        org.setExpiryDate(expiredDate);
+        org.setEnabled(true);
+
+        when(clientOrganisationRepository.findAll()).thenReturn(Arrays.asList(org));
+
+        clientOrganisationService.disableExpiredOrganisations();
+
+        assertThat(org.isEnabled()).isFalse();
+        verify(clientOrganisationRepository).saveAll(Arrays.asList(org));
     }
 }

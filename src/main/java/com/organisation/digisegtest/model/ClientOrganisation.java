@@ -1,11 +1,18 @@
 package com.organisation.digisegtest.model;
 
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "client_organisation")
@@ -15,12 +22,17 @@ public class ClientOrganisation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required and cannot be blank")
+    @Length(max = 100, message = "Name should not exceed 100 characters")
     @Column(unique = true, nullable = false)
     private String name;
 
+    @NotNull(message = "Registration date is required")
+    @PastOrPresent(message = "Registration date cannot be in the future")
     @Column(nullable = false)
     private LocalDate registrationDate;
 
+    @NotNull(message = "Expiry date is required")
     @Column(nullable = false)
     private LocalDate expiryDate;
 
@@ -28,8 +40,8 @@ public class ClientOrganisation {
     private boolean enabled;
 
     @OneToMany(mappedBy = "clientOrganisation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @UniqueElements(message = "Personnel set should have unique elements")
     private Set<Personnel> personnel = new HashSet<>();
-
 
     public Long getId() {
         return id;

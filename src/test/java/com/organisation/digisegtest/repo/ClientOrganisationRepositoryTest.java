@@ -67,7 +67,7 @@ public class ClientOrganisationRepositoryTest {
         ClientOrganisation org2 = new ClientOrganisation();
         org2.setName("Unique Disabled Organisation");  // Ensure the name is unique
         org2.setRegistrationDate(LocalDate.now());
-        org2.setExpiryDate(LocalDate.now().plusYears(1));
+        org2.setExpiryDate(LocalDate.now().minusDays(1));
         org2.setEnabled(false);
 
         clientOrganisationRepository.save(org1);

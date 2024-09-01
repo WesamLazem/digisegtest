@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client Organisations</title>
+</head>
+<body>
+<h1>Client Organisations</h1>
+<p>Curently Enabled Organisations: <span th:text="${enabledCount}"></span></p>
+
+<div th:if="${#lists.isNotEmpty(expiringSoonOrganisations)}">
+    <h2>Warning: The following organisations are expiring soon!</h2>
+    <ul>
+        <li th:each="org : ${expiringSoonOrganisations}"
+            th:text="${org.name} + ' (Expiry: ' + ${org.expiryDate} + ')'"></li>
+    </ul>
+</div>
+</body>
+</html>
+
+
+

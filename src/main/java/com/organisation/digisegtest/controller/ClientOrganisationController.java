@@ -89,6 +89,16 @@ public class ClientOrganisationController {
         return "client_organisations/home";
     }
 
+//    @GetMapping("/client-organisations")
+//    public String getClientOrganisations(Model model) {
+//        long enabledCount = clientOrganisationService.countEnabledOrganisations();
+//        List<ClientOrganisation> expiringSoonOrganisations = clientOrganisationService.findExpiringSoon();
+//
+//        model.addAttribute("enabledCount", enabledCount);
+//        model.addAttribute("expiringSoonOrganisations", expiringSoonOrganisations);
+//
+//        return "client-organisations";  // Ensure this matches your template name
+//    }
     @GetMapping("/expiring-soon")
     public String findExpiringSoon(Model model) {
         List<ClientOrganisation> expiringSoon = clientOrganisationService.findExpiringSoon();

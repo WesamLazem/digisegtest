@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,35 +54,9 @@ public class ClientOrganisationRepositoryTest {
         assertThat(foundOrg.getName()).isEqualTo("Test Organisation");
     }
 
-//    @Test
-//    @DirtiesContext
-//    public void testCountByEnabledTrue() {
-//        // Arrange
-//        ClientOrganisation org1 = new ClientOrganisation();
-//        org1.setName("Unique Enabled Organisation 1");  // Ensure the name is unique
-//        org1.setRegistrationDate(LocalDate.now());
-//        org1.setExpiryDate(LocalDate.now().plusYears(1));
-//        org1.setEnabled(true);
-//
-//        ClientOrganisation org2 = new ClientOrganisation();
-//        org2.setName("Unique Disabled Organisation");  // Ensure the name is unique
-//        org2.setRegistrationDate(LocalDate.now());
-//        org2.setExpiryDate(LocalDate.now().plusYears(1));
-//        org2.setEnabled(false);
-//
-//        clientOrganisationRepository.save(org1);
-//        clientOrganisationRepository.save(org2);
-//
-//        // Act
-//        long enabledCount = clientOrganisationRepository.countByEnabledTrue();
-//
-//        // Assert
-//        assertThat(enabledCount).isEqualTo(2L); // Only one enabled organisation
-//    }
-
     @Test
     @DirtiesContext
-    public void testCountByEnabledTrue_OneEnabledOrganisation() {
+    public void testCountByEnabledTrue() {
         // Arrange
         ClientOrganisation org1 = new ClientOrganisation();
         org1.setName("Unique Enabled Organisation 1");  // Ensure the name is unique
@@ -89,32 +64,23 @@ public class ClientOrganisationRepositoryTest {
         org1.setExpiryDate(LocalDate.now().plusYears(1));
         org1.setEnabled(true);
 
-        clientOrganisationRepository.save(org1);
-
-        // Act
-        long enabledCount = clientOrganisationRepository.countByEnabledTrue();
-
-        // Assert
-        assertThat(enabledCount).isEqualTo(1L); // Only one enabled organisation
-    }
-    @Test
-    @DirtiesContext
-    public void testCountByEnabledTrue_NoEnabledOrganisations() {
-        // Arrange
         ClientOrganisation org2 = new ClientOrganisation();
         org2.setName("Unique Disabled Organisation");  // Ensure the name is unique
         org2.setRegistrationDate(LocalDate.now());
-        org2.setExpiryDate(LocalDate.now().minusDays(1));
+        org2.setExpiryDate(LocalDate.now().plusYears(1));
         org2.setEnabled(false);
 
+        clientOrganisationRepository.save(org1);
         clientOrganisationRepository.save(org2);
 
         // Act
         long enabledCount = clientOrganisationRepository.countByEnabledTrue();
 
         // Assert
-        assertThat(enabledCount).isEqualTo(0L); // No enabled organisations
+        assertThat(enabledCount).isEqualTo(2L); // Only one enabled organisation
+
     }
+
     @Test
     @Transactional
     public void testFindById() {
